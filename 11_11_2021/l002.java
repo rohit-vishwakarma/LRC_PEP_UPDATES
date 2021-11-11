@@ -39,50 +39,49 @@ public class l002 {
         return count;
     }
 
-    void oneDQueen()
+    public static void oneDQueen()
     {
         int n = 5, tq = 3;
         boolean[] board = new boolean[n];
+        System.out.println(queenCombination(board, 0, tq, 0, ""));
+        System.out.println(queenPermutation(board, 0, tq,0, ""));
 
-        
     }
 
-        // 2d Queens ===================================================
-
-    int queenCombination2D(vector<vector<bool>> &board, int idx, int tnq, string asf)
+    public static int queenCombination2D(boolean[][] board, int idx, int tnq, String asf)
     {
         if (tnq == 0)
         {
-            cout << asf << endl;
+            System.out.println(asf); 
             return 1;
         }
 
-        int count = 0, n = board.size(), m = board[0].size();
+        int count = 0, n = board.length, m = board[0].length;
         for (int i = idx; i < n * m; i++)
         {
             int r = i / m, c = i % m;
-            count += queenCombination2D(board, i + 1, tnq - 1, asf + "(" + to_string(r) + "," + to_string(c) + ") ");
+            count += queenCombination2D(board, i + 1, tnq - 1, asf + "(" + r + "," + c + ") ");
         }
 
         return count;
     }
 
-    int queenPermutation2D(vector<vector<bool>> &board, int idx, int tnq, string asf)
+    public static int queenPermutation2D(boolean[][] board, int idx, int tnq, String asf)
     {
         if (tnq == 0)
         {
-            cout << asf << endl;
+            System.out.println(asf); 
             return 1;
         }
 
-        int count = 0, n = board.size(), m = board[0].size();
+        int count = 0, n = board.length, m = board[0].length;
         for (int i = idx; i < n * m; i++)
         {
             int r = i / m, c = i % m;
             if (!board[r][c])
             {
                 board[r][c] = !board[r][c];
-                count += queenPermutation2D(board, 0, tnq - 1, asf + "(" + to_string(r) + "," + to_string(c) + ") ");
+                count += queenPermutation2D(board, 0, tnq - 1,asf + "(" + r + "," + c + ") ");
                 board[r][c] = !board[r][c];
             }
         }
@@ -90,17 +89,18 @@ public class l002 {
         return count;
     }
 
-    void twoDQueen()
+    public static void TwoDQueen()
     {
-        int n = 4, tnq = 4;
+        int n = 3, tq = 3;
 
-        vector<vector<bool>> board(n, vector<bool>(n, false));
+        boolean[][] board = new boolean[n][n];
 
-        // cout << queenCombination2D(board, 0, tnq, "") << endl;
-        cout << queenPermutation2D(board, 0, tnq, "") << endl;
+        System.out.println(queenPermutation2D(board, 0, tq, ""));
+        System.out.println(queenCombination2D(board, 0, tq, ""));
     }
 
     public static void main(String[] args) {
-
+        oneDQueen();
+        TwoDQueen();
     }
 }
