@@ -1,4 +1,4 @@
-public class l001{
+public class Trees{
 
     // PNC
     public static int permutationInfi(int[] arr, int tar, String ans) {

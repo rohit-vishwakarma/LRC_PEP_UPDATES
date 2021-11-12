@@ -1,4 +1,4 @@
-public class l002 {
+public class Queens {
 
     public static int queenCombination(boolean[] board, int idx, int tnq, int qpsf, String asf)
     {
