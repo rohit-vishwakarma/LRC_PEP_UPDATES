@@ -2,7 +2,7 @@ public class Nqueen {
     
     public static boolean IsQueenSafe(int[][] chess, int row, int col) {
         // write your code here
-        int[][] dir = {{0,-1}, {-1,-1},{-1, 0}, {-1 , 1},{0,1}, {1,1},{1,0}, {1,-1}};
+        int[][] dir = {{0,-1}, {-1,-1},{-1, 0}, {-1, 1},{0,1}, {1,1},{1,0}, {1,-1}};
         int n = chess.length, m = chess[0].length;
         for(int[] d : dir){
             int r = row + d[0];
