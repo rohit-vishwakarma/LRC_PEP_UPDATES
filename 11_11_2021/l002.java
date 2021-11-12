@@ -48,6 +48,49 @@ public class l002 {
 
     }
 
+    public static int queenCombinationSS(boolean[] board, int idx, int tnq, int qpsf, String asf)
+    {
+        if (idx == board.length || qpsf == tnq)
+        {
+            if(qpsf == tnq){
+            System.out.println(asf);
+            return 1;
+            }
+            return 0;
+        }
+
+        int count = 0;
+        
+        count += queenCombinationSS(board, idx + 1, tnq, qpsf + 1, asf + "P" + idx+ "Q" + qpsf + " ");
+        count += queenCombinationSS(board, idx + 1, tnq, qpsf + 1, asf );
+        
+
+        return count;
+    }
+
+    public static int queenPermutationSS(boolean[] board, int idx, int tnq, int qpsf, String asf)
+    {
+        if (qpsf == tnq)
+        {
+            System.out.println(asf); 
+            return 1;
+        }
+
+        int count = 0;
+        
+        if (!board[idx])
+        {
+            board[idx] = !board[idx];
+            count += queenPermutationSS(board, 0, tnq, qpsf + 1, asf + "P" + idx + "Q" + qpsf + " ");
+            board[idx] = !board[idx];
+        }
+        count += queenPermutationSS(board, idx + 1, tnq, qpsf + 1, asf );
+        
+
+        return count;
+    }
+
+// =================================== 2D ===============================
     public static int queenCombination2D(boolean[][] board, int idx, int tnq, String asf)
     {
         if (tnq == 0)
@@ -95,8 +138,55 @@ public class l002 {
 
         boolean[][] board = new boolean[n][n];
 
-        System.out.println(queenPermutation2D(board, 0, tq, ""));
-        System.out.println(queenCombination2D(board, 0, tq, ""));
+        // System.out.println(queenPermutation2D(board, 0, tq, ""));
+        // System.out.println(queenCombination2D(board, 0, tq, ""));
+        System.out.println(queenPermutation2DSS(board, 0, tq, ""));
+        System.out.println(queenCombination2DSS(board, 0, tq, ""));
+    }
+
+    public static int queenCombination2DSS(boolean[][] board, int idx, int tnq, String asf)
+    {
+        if(tnq == 0 || idx == board.length*board[0].length){
+            if (tnq == 0)
+            {
+            System.out.println(asf); 
+            return 1;
+            }
+        }
+
+
+        int count = 0,  m = board[0].length;
+        
+        int r = idx / m, c = idx % m;
+        count += queenCombination2DSS(board, idx + 1, tnq - 1, asf + "(" + r + "," + c + ") ");
+        count += queenCombination2DSS(board, idx + 1, tnq - 1, asf );
+        
+
+        return count;
+    }
+
+    public static int queenPermutation2DSS(boolean[][] board, int idx, int tnq, String asf)
+    {
+        if(tnq == 0 || idx == board.length*board[0].length){
+            if (tnq == 0)
+            {
+                System.out.println(asf); 
+                return 1;
+                }
+            }
+    
+    
+            int count = 0,  m = board[0].length;
+            
+            int r = idx / m, c = idx % m;
+            if(!board[r][c]){
+                board[r][c] = !board[r][c];
+                count += queenCombination2DSS(board, 0, tnq - 1, asf + "(" + r + "," + c + ") ");
+                board[r][c] = !board[r][c];
+                }
+            count += queenCombination2DSS(board, idx + 1, tnq, asf );
+            
+            return count;
     }
 
     public static void main(String[] args) {
