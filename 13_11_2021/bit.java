@@ -24,6 +24,34 @@ public class bit {
         }
         return false;
     }
+//342
+    public boolean isPowerOfFour(int n) {
+        if(n<=0 || (n&(n-1))!=0) return false;
+        
+        int c = 0;
+        while(n>1){
+            n = (n>>1);
+            c++;            
+        }
+        
+        return (c&1) == 0;
+    }
+//191
+    public int hammingWeight(int n) {
+        int c =0;
+        while(n!=0){
+            n &= (n-1);
+            c++;
+        }
+        return c;
+    }
+//338
+    public int[] countBits(int n) { 
+        int[] ans = new int[n+1];
+        for(int i=1; i<=n; i++)
+            ans[i] = ans[(i&(i-1))]+1;
+        return ans;
+    }
 // 260
     public int[] singleNumber(int[] nums) {
         int xor = 0;
