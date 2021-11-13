@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class sudoku {
     public boolean[][] rows;
     public boolean[][] cols;
