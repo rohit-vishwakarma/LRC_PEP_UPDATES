@@ -3,7 +3,6 @@ import java.util.*;
 
 public class KSWES {
 
-
 	public static void solution(int[] arr, int vidx,int n , int k,int[] subsetSum,int sf, ArrayList<ArrayList<Integer>> ans) {
 		//write your code here
 		if(vidx == arr.length){
