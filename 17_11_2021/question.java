@@ -57,4 +57,14 @@ public class question {
         c2.next = null;
         head = c1.next;
     }
+
+    //Merge K sorted linkedlist
+
+    public static ListNode mergeKList(ListNode[] lists, int si, int ei){
+        if(si == ei) return lists[si];
+        int mid = (si + ei) / 2;
+        ListNode left = mergeKList(lists, si, mid);
+        ListNode right = mergeKList(lists, mid+1, ei);
+        return mergeTwoLists(left, right);
+    }
 }
