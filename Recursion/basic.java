@@ -49,6 +49,13 @@ public class basic {
         System.out.println("Post "+n);
     }
 
+    public static void toh(int n, int src, int des, int help){
+        if(n==0) return;
+        toh(n-1, src, help, des);
+        System.out.println(n +" -> [ " + src +" -> " + des +" ]");
+        toh(n-1, help, des, src);
+    }
+
     public static void main(String[] args){
         // PrinDec(10);
         // PrinInc(10);
@@ -60,5 +67,6 @@ public class basic {
         // int res = powerLog(10,5);
         // System.out.println(res);
         // PrintZigZag(10);
+        toh(3, 10, 11, 12);
     }
 }
