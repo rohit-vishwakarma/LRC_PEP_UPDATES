@@ -1,4 +1,11 @@
 public class question {
+    public class ListNode{
+        int val;
+        ListNode next;
+        ListNode(int val){
+            this.val = val;
+        }
+    }
     //21
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if(l1 == null || l2 == null) return l1!=null ? l1 : l2;
@@ -65,6 +72,6 @@ public class question {
         int mid = (si + ei) / 2;
         ListNode left = mergeKList(lists, si, mid);
         ListNode right = mergeKList(lists, mid+1, ei);
-        return mergeTwoLists(left, right);
+        // return mergeTwoLists(left, right);
     }
 }
