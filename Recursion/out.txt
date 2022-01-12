@@ -1,7 +1,29 @@
+Pre : 10  11  12 with 3
+Pre : 10  12  11 with 2
+Pre : 10  11  12 with 1
+Base
 1 -> [ 10 -> 11 ]
+Base
+Post : 10  11  12 with 1
 2 -> [ 10 -> 12 ]
+Pre : 11  12  10 with 1
+Base
 1 -> [ 11 -> 12 ]
+Base
+Post : 11  12  10 with 1
+Post : 10  12  11 with 2
 3 -> [ 10 -> 11 ]
+Pre : 12  11  10 with 2
+Pre : 12  10  11 with 1
+Base
 1 -> [ 12 -> 10 ]
+Base
+Post : 12  10  11 with 1
 2 -> [ 12 -> 11 ]
+Pre : 10  11  12 with 1
+Base
 1 -> [ 10 -> 11 ]
+Base
+Post : 10  11  12 with 1
+Post : 12  11  10 with 2
+Post : 10  11  12 with 3
