@@ -201,7 +201,26 @@ public class basic {
         }
     }
     // =================================================================================================================================
-
+    public static void printEncodings(String str,String asf, int idx) {
+        if(idx == str.length()){
+            System.out.println(asf);
+            return;
+        }
+        if(str.charAt(idx) == '0'){
+            return;
+        }
+        int v1 = (int)(str.charAt(idx) - '0');
+        printEncodings(str, asf + (char)(v1 + 'a' - 1) , idx+1);
+        if(idx+1 < str.length()){
+            int v2 = v1 * 10 + (int)(str.charAt(idx+1) - '0');
+            if(v2<=26){
+                printEncodings(str, asf + (char)(v2 + 'a' - 1), idx+2);
+            }
+        }
+        
+    }
+    // =================================================================================================================================
+    
     public static void main(String[] args) {
         // PrinDec(10);
         // PrinInc(10);
