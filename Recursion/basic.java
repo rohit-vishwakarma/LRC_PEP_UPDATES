@@ -232,7 +232,7 @@ public class basic {
         // int res = powerLog(10,5);
         // System.out.println(res);
         // PrintZigZag(10);
-        toh(3, 10, 11, 12);
+        // toh(3, 10, 11, 12);
         // System.out.println(gss("abc", "", 0));
         // System.out.println(getKPC("78", "", 0));
     }
