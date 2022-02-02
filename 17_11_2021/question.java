@@ -67,7 +67,7 @@ public class question {
 
     //Merge K sorted linkedlist
 
-    public static ListNode mergeKList(ListNode[] lists, int si, int ei){
+    public static ListNode mergeKList2(ListNode[] lists, int si, int ei){
         if(si == ei) return lists[si];
         int mid = (si + ei) / 2;
         ListNode left = mergeKList(lists, si, mid);
