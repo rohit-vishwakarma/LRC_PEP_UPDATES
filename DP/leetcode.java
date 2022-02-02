@@ -292,4 +292,152 @@ public class leetcode {
         }
         return dp[N][K];
     }
+
+    //1458 maxDotProduct L-4
+    public int helper1(int[]a, int[] b, int n, int m, int[][] dp){
+        
+        if(n < 0 || m < 0) return -(int)1e9;
+        
+        if(dp[n][m] != -1) return dp[n][m];
+        
+        dp[n][m] = a[n] * b[m];
+        
+        dp[n][m] += Math.max(helper1(a,b, n-1, m-1,dp), 0);
+        
+        dp[n][m] = Math.max(helper1(a,b,n-1,m, dp), dp[n][m]);
+        dp[n][m] = Math.max(helper1(a, b, n, m-1, dp), dp[n][m]);
+        
+        return dp[n][m];
+        
+    }
+    
+    public int maxDotProduct(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        int m = nums2.length;
+        int[][] dp = new int[n][m];
+        for(int[] a: dp){
+            Arrays.fill(a, -1);
+        }
+        int ans = helper(nums1, nums2, n-1, m-1, dp);
+        return ans;
+    }
+
+    //1035 maxUncrossedLines
+    public int helper(int[] a, int[] b, int n, int m, int[][] dp){
+        if(n == 0 || m ==0){
+            return dp[n][m] = 0;
+        }
+        
+        if(dp[n][m] != -1) return dp[n][m];
+        if(a[n-1] == b[m-1]){
+            return dp[n][m] = helper(a,b, n-1, m-1,dp) +1;
+        }else{
+            return dp[n][m] = Math.max(helper(a, b, n-1, m, dp), helper(a, b, n, m-1, dp));
+        }
+    }
+    
+    public int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int n = nums1.length, m = nums2.length;
+        int[][] dp = new int[n+1][m+1];
+        for(int[] a: dp){
+            Arrays.fill(a, -1);
+        }
+        return helper(nums1, nums2, n, m, dp);
+    }
+
+
+    //Count subsequences of type a^i, b^j, c^k gfg
+    public int fun(String s)
+    {
+        // Write your code here
+        int a= 0,ab = 0, abc = 0, mod = (int)1e9 + 7;
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            if(ch == 'a'){
+                a = ((2*a)% mod + 1) % mod;
+            }else if(ch  == 'b'){
+                ab = ((2*ab)% mod +a)% mod;
+            }else if(ch == 'c'){
+                abc = ((2*abc)% mod + ab)% mod;
+            }
+        }
+        return abc % mod;
+    }
+
+    // Count palindromic subsequences gfg
+
+    long mod = (long)1e9 + 7;
+    
+    long cps(String s, int si, int ei , long[][] dp){
+        if(si >= ei){
+            return dp[si][ei] = (si == ei) ? 1 : 0;
+        }
+        if(dp[si][ei] != -1) return dp[si][ei] ;
+        
+        long f = cps(s, si + 1, ei , dp) % mod;
+        long sec = cps(s, si , ei -1, dp) % mod;
+        if(s.charAt(si) == s.charAt(ei)){
+            return dp[si][ei] = (f + sec + 1) % mod;
+        }
+        long a = cps(s, si + 1, ei -1, dp) % mod;
+        return dp[si][ei] = (f + sec - a + mod) % mod;
+        
+        
+    }
+    
+    long countPS(String str)
+    {
+        // Your code here
+        int n  = str.length();
+        long[][] dp = new long[n][n];
+        for(long[] a: dp)
+            Arrays.fill(a, -1);
+        return cps(str, 0, n-1, dp) ;
+    }
+
+    //44 Wildcard matching
+    public String removestar(String p){
+        if(p.length() == 0) return p;
+        StringBuilder sb = new StringBuilder();
+        sb.append(p.charAt(0));
+        int i = 1;
+        while(i<p.length()){
+            while(i<p.length() && sb.charAt(sb.length() -1) == '*' && p.charAt(i) == '*') i++;
+            if(i<p.length()) sb.append(p.charAt(i));
+            i++;
+        }
+        return sb.toString();
+    }
+    
+    public int isMatch(String a, String b, int n, int m, int[][] dp){
+        if(n==0 || m==0){
+            if(n ==0 && m==0) return dp[n][m] = 1;
+            if(m==1 && b.charAt(m-1) == '*') return dp[n][m] = 1;
+            return dp[n][m] = 0;
+        }
+        if(dp[n][m] != -1) return dp[n][m];
+        int ch1 = a.charAt(n-1);
+        int ch2 = b.charAt(m-1);
+        if(ch1 == ch2 || ch2 == '?'){
+            return dp[n][m] = isMatch(a,b,n-1, m-1, dp);
+        }else if(ch2 == '*'){
+            boolean res = false;
+            res = res || isMatch(a,b,n-1, m, dp) ==1 ;
+            res = res || isMatch(a,b,n, m-1, dp) ==1;
+            
+            return dp[n][m] = res ? 1 : 0;
+        }
+        
+        return dp[n][m] = 0;
+        
+    }
+    
+    public boolean isMatch(String s, String p) {
+        p = removestar(p);
+        int n = s.length(), m = p.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int[] a: dp) Arrays.fill(a, -1);
+        
+        return isMatch(s,p,n,m, dp) == 1;
+    }
 }
