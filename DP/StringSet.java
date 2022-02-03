@@ -199,4 +199,34 @@ public class StringSet {
         }
         return numDis(s, t, n, m, dp);
     }
+
+    //132 palindrome partitioning 2
+    public int mincut(String s, int si, boolean[][] pal, int[]dp){
+        
+        if(pal[si][s.length()-1]) return dp[si] = 0;
+        
+        if(dp[si] != -1) return dp[si];
+        int min = s.length();
+        for(int cur = si; cur<s.length(); cur++){
+            if(pal[si][cur]){
+                min = Math.min(min, mincut(s,cur + 1, pal, dp ) + 1);
+            }
+        }
+        return dp[si] = min;
+    }
+    
+    public int minCut(String s) {
+        int n = s.length();
+        boolean[][] pal = new boolean[n][n];
+        for(int gap=0; gap<n; gap++){ // find all the palindromes in the string
+            for(int i=0, j=gap ; j<n; i++, j++){
+                if(gap == 0) pal[i][j] = true;
+                else if(gap == 1 && s.charAt(i) == s.charAt(j))pal[i][j] = true;
+                else pal[i][j] = s.charAt(i) == s.charAt(j) && pal[i+1][j-1];
+            }
+        }
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        return mincut(s,0,pal, dp);
+    }
 }
