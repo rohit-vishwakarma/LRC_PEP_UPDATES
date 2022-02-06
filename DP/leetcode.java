@@ -318,7 +318,7 @@ public class leetcode {
         for(int[] a: dp){
             Arrays.fill(a, -1);
         }
-        int ans = helper(nums1, nums2, n-1, m-1, dp);
+        int ans = helper1(nums1, nums2, n-1, m-1, dp);
         return ans;
     }
 
