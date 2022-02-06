@@ -58,6 +58,7 @@ public class StringSet {
         }
         int ans = helper(s, 0, n - 1, dp);
         String a = lpss_ReverseEngg(s, 0, n - 1, dp);
+        
         System.out.println(a);
         return ans;
     }
@@ -207,7 +208,7 @@ public class StringSet {
         
         if(dp[si] != -1) return dp[si];
         int min = s.length();
-        for(int cur = si; cur<s.length(); cur++){
+        for(int cur = si; cur<s.length(); cur++){ //finding minimum cut from si to cur character of the string
             if(pal[si][cur]){
                 min = Math.min(min, mincut(s,cur + 1, pal, dp ) + 1);
             }
@@ -228,5 +229,49 @@ public class StringSet {
         int[] dp = new int[n];
         Arrays.fill(dp, -1);
         return mincut(s,0,pal, dp);
+    }
+    //10 Regular Expression Matching
+    public String removestar(String p){
+        if(p.length() == 0) return p;
+        StringBuilder sb = new StringBuilder();
+        sb.append(p.charAt(0));
+        int i = 1;
+        while(i<p.length()){
+            while(i<p.length() && sb.charAt(sb.length() -1) == '*' && p.charAt(i) == '*') i++;
+            if(i<p.length()) sb.append(p.charAt(i));
+            i++;
+        }
+        return sb.toString();
+    }
+    public int isMatch(String a, String b, int n, int m, int[][] dp){
+        if(n==0 && m==0){
+           return dp[n][m] = 1;
+        }
+        if(m==0) return dp[n][m] = 0;
+        if(dp[n][m] != -1) return dp[n][m];
+        int ch1 = n>0 ? a.charAt(n-1) : '$'; // $ means the string a is empty and the call for b string having char* sequence
+        int ch2 = b.charAt(m-1);
+        if(ch1 != '$' && (ch2 == '.' || ch1 == ch2)){
+            return dp[n][m] = isMatch(a,b,n-1, m-1, dp);
+        }else if(ch2 == '*'){
+            boolean res = false;
+            if(m>1 && n>0 && (b.charAt(m-2) == '.' || b.charAt(m-2) == a.charAt(n-1)))
+                res = res || isMatch(a,b,n-1, m, dp) ==1 ;  // if matched the character
+            res = res || isMatch(a,b,n, m-2, dp) ==1; // if not matched and repeat it as zero times
+            
+            return dp[n][m] = res ? 1 : 0;
+        }
+        
+        return dp[n][m] = 0;
+        
+    }
+    
+    public boolean isMatch(String s, String p) {
+        p = removestar(p);
+        int n = s.length(), m = p.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int[] a: dp) Arrays.fill(a, -1);
+        
+        return isMatch(s,p,n,m, dp) == 1;
     }
 }
