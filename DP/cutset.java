@@ -95,6 +95,51 @@ public class cutset {
         return burst(nums, 0, n - 1, dp);
     }
 
+    public static class cpair{
+        int tc = 0;
+        int fc = 0;
+        cpair(int t, int f){
+            tc = t;
+            fc = f;
+        }
+    }
+    static int mod = 1003;
+    public static void Evaluation(cpair l , cpair r, char ch, cpair res){
+        int total = ((l.tc + l.fc) * (r.tc + r.fc))% mod;
+        if(ch == '|'){
+            int fc = (l.fc * r.fc) % mod;
+            res.fc  = (res.fc + fc) % mod;
+            res.tc = (res. tc + total - fc + mod) % mod; 
+        }else if(ch == '&'){
+            int tc = (l.tc * r.tc) % mod;
+            res.fc = ( res.fc + total - tc + mod) % mod;
+            res.tc = (res.tc + tc) % mod;
+        }else{
+            int tc = (l.tc * r.fc) + (l.fc * r.tc);
+            res.tc = (res.tc + tc) % mod;
+            res.fc = (res.fc + total - tc + mod) % mod;
+        }
+    }
+    public static cpair countWays(String s, int si,int ei, cpair[][] dp){
+        if(si == ei){
+            int t = s.charAt(si) == 'T' ? 1 : 0;
+            int f = s.charAt(si) == 'F' ? 1 : 0;
+            return dp[si][ei] = new cpair(t,f);
+        }
+        if(dp[si][ei] != null) return dp[si][ei];
+        cpair res = new cpair(0, 0);
+        for(int cut = si + 1; cut<ei; cut+=2){
+            cpair leftres = countWays(s, si, cut - 1, dp);
+            cpair rightres = countWays(s, cut + 1, ei, dp);
+            
+            char operator = s.charAt(cut);
+            Evaluation(leftres, rightres, operator, res);
+        }
+        return dp[si][ei] = res;
+    }
+    public static int countWays(int N, String S){
+
+    }
     public static void main(String[] args) {
         String s = "1+2*3+4*5";
         int n = s.length();
