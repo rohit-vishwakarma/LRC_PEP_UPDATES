@@ -138,7 +138,69 @@ public class cutset {
         return dp[si][ei] = res;
     }
     public static int countWays(int N, String S){
+        cpair[][] dp = new cpair[N][N];
+        return countWays(S, 0, N-1, dp).tc;
+    }
 
+    //241. Different Ways to Add Parentheses
+    public void fill(String s, List<Integer> operand,List<Character> operator){
+        int i=0; 
+        while(i < s.length()){
+            int val =0;
+            while(i<s.length() && s.charAt(i) >= '0' && s.charAt(i) <='9'){
+                val = val * 10 + (s.charAt(i) - '0');
+                i++;
+            }
+            operand.add(val);
+            if(i < s.length()){
+                operator.add(s.charAt(i));
+            }
+            i++;
+        }
+        // System.out.println(operand);
+        // System.out.println(operator);
+    }
+    
+    public List<Integer> diffWaysToCompute(String expression) {
+        int n = expression.length();
+        int[][] dp = new int[n][n];
+        for(int[] d: dp){
+            Arrays.fill(d, -(int)1e9);
+        }
+        List<Integer> operand = new ArrayList<>();
+        List<Character> operator = new ArrayList<>();
+        fill(expression, operand, operator);
+        List<Integer> ans = helper(operand,operator, 0, operand.size() -1, 0, operator.size()-1);
+        
+        return ans;
+    }
+    public List<Integer> helper(List<Integer> operand,List<Character> operator, int ops, int ope, int ots, int ote){
+        if(ops == ope){
+            int val = operand.get(ops);
+            List<Integer> base = new ArrayList<>();
+            base.add(val);
+            return base;
+        }
+        List<Integer> res = new ArrayList<>();
+        for(int cut = ots; cut<=ote; cut++){
+            List<Integer> lf = helper(operand, operator, ops, cut, ots, cut - 1);
+            List<Integer> rg = helper(operand, operator, cut + 1, ope, cut+ 1, ote);
+            char ch = operator.get(cut);
+            for(int i=0; i< lf.size(); i++){
+                int v1 = lf.get(i);
+                for(int j=0; j<rg.size(); j++){
+                    int v2 = rg.get(j);
+                    if(ch == '-'){
+                        res.add(v1 - v2);
+                    }else if(ch == '+'){
+                        res.add(v1 + v2);
+                    }else if(ch == '*'){
+                        res.add(v1 * v2);
+                    }
+                }
+            }
+        }
+        return res;
     }
     public static void main(String[] args) {
         String s = "1+2*3+4*5";
