@@ -95,64 +95,70 @@ public class cutset {
         return burst(nums, 0, n - 1, dp);
     }
 
-    public static class cpair{
+    public static class cpair {
         int tc = 0;
         int fc = 0;
-        cpair(int t, int f){
+
+        cpair(int t, int f) {
             tc = t;
             fc = f;
         }
     }
+
     static int mod = 1003;
-    public static void Evaluation(cpair l , cpair r, char ch, cpair res){
-        int total = ((l.tc + l.fc) * (r.tc + r.fc))% mod;
-        if(ch == '|'){
+
+    public static void Evaluation(cpair l, cpair r, char ch, cpair res) {
+        int total = ((l.tc + l.fc) * (r.tc + r.fc)) % mod;
+        if (ch == '|') {
             int fc = (l.fc * r.fc) % mod;
-            res.fc  = (res.fc + fc) % mod;
-            res.tc = (res. tc + total - fc + mod) % mod; 
-        }else if(ch == '&'){
+            res.fc = (res.fc + fc) % mod;
+            res.tc = (res.tc + total - fc + mod) % mod;
+        } else if (ch == '&') {
             int tc = (l.tc * r.tc) % mod;
-            res.fc = ( res.fc + total - tc + mod) % mod;
+            res.fc = (res.fc + total - tc + mod) % mod;
             res.tc = (res.tc + tc) % mod;
-        }else{
+        } else {
             int tc = (l.tc * r.fc) + (l.fc * r.tc);
             res.tc = (res.tc + tc) % mod;
             res.fc = (res.fc + total - tc + mod) % mod;
         }
     }
-    public static cpair countWays(String s, int si,int ei, cpair[][] dp){
-        if(si == ei){
+
+    public static cpair countWays(String s, int si, int ei, cpair[][] dp) {
+        if (si == ei) {
             int t = s.charAt(si) == 'T' ? 1 : 0;
             int f = s.charAt(si) == 'F' ? 1 : 0;
-            return dp[si][ei] = new cpair(t,f);
+            return dp[si][ei] = new cpair(t, f);
         }
-        if(dp[si][ei] != null) return dp[si][ei];
+        if (dp[si][ei] != null)
+            return dp[si][ei];
         cpair res = new cpair(0, 0);
-        for(int cut = si + 1; cut<ei; cut+=2){
+        for (int cut = si + 1; cut < ei; cut += 2) {
             cpair leftres = countWays(s, si, cut - 1, dp);
             cpair rightres = countWays(s, cut + 1, ei, dp);
-            
+
             char operator = s.charAt(cut);
             Evaluation(leftres, rightres, operator, res);
         }
         return dp[si][ei] = res;
     }
-    public static int countWays(int N, String S){
+
+    public static int countWays(int N, String S) {
         cpair[][] dp = new cpair[N][N];
-        return countWays(S, 0, N-1, dp).tc;
+        return countWays(S, 0, N - 1, dp).tc;
     }
 
-    //241. Different Ways to Add Parentheses
-    public void fill(String s, List<Integer> operand,List<Character> operator){
-        int i=0; 
-        while(i < s.length()){
-            int val =0;
-            while(i<s.length() && s.charAt(i) >= '0' && s.charAt(i) <='9'){
+    // 241. Different Ways to Add Parentheses
+    public void fill(String s, List<Integer> operand, List<Character> operator) {
+        int i = 0;
+        while (i < s.length()) {
+            int val = 0;
+            while (i < s.length() && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
                 val = val * 10 + (s.charAt(i) - '0');
                 i++;
             }
             operand.add(val);
-            if(i < s.length()){
+            if (i < s.length()) {
                 operator.add(s.charAt(i));
             }
             i++;
@@ -160,41 +166,42 @@ public class cutset {
         // System.out.println(operand);
         // System.out.println(operator);
     }
-    
+
     public List<Integer> diffWaysToCompute(String expression) {
         int n = expression.length();
         int[][] dp = new int[n][n];
-        for(int[] d: dp){
-            Arrays.fill(d, -(int)1e9);
+        for (int[] d : dp) {
+            Arrays.fill(d, -(int) 1e9);
         }
         List<Integer> operand = new ArrayList<>();
         List<Character> operator = new ArrayList<>();
         fill(expression, operand, operator);
-        List<Integer> ans = helper(operand,operator, 0, operand.size() -1, 0, operator.size()-1);
-        
+        List<Integer> ans = helper(operand, operator, 0, operand.size() - 1, 0, operator.size() - 1);
+
         return ans;
     }
-    public List<Integer> helper(List<Integer> operand,List<Character> operator, int ops, int ope, int ots, int ote){
-        if(ops == ope){
+
+    public List<Integer> helper(List<Integer> operand, List<Character> operator, int ops, int ope, int ots, int ote) {
+        if (ops == ope) {
             int val = operand.get(ops);
             List<Integer> base = new ArrayList<>();
             base.add(val);
             return base;
         }
         List<Integer> res = new ArrayList<>();
-        for(int cut = ots; cut<=ote; cut++){
+        for (int cut = ots; cut <= ote; cut++) {
             List<Integer> lf = helper(operand, operator, ops, cut, ots, cut - 1);
-            List<Integer> rg = helper(operand, operator, cut + 1, ope, cut+ 1, ote);
+            List<Integer> rg = helper(operand, operator, cut + 1, ope, cut + 1, ote);
             char ch = operator.get(cut);
-            for(int i=0; i< lf.size(); i++){
+            for (int i = 0; i < lf.size(); i++) {
                 int v1 = lf.get(i);
-                for(int j=0; j<rg.size(); j++){
+                for (int j = 0; j < rg.size(); j++) {
                     int v2 = rg.get(j);
-                    if(ch == '-'){
+                    if (ch == '-') {
                         res.add(v1 - v2);
-                    }else if(ch == '+'){
+                    } else if (ch == '+') {
                         res.add(v1 + v2);
-                    }else if(ch == '*'){
+                    } else if (ch == '*') {
                         res.add(v1 * v2);
                     }
                 }
@@ -202,6 +209,73 @@ public class cutset {
         }
         return res;
     }
+
+    // optimalSearchTree gfg
+    static int sumoffreq(int si, int ei, int[] freq) {
+        int sum = 0;
+        while (si <= ei) {
+            sum += freq[si];
+            si++;
+        }
+        return sum;
+    }
+
+    static int helper(int[] arr, int[] freq, int si, int ei, int[][] dp) {
+        if (dp[si][ei] != -1)
+            return dp[si][ei];
+        int minAns = (int) 1e9;
+        for (int cut = si; cut <= ei; cut++) {
+            int lres = cut == si ? 0 : helper(arr, freq, si, cut - 1, dp);
+            int rres = cut == ei ? 0 : helper(arr, freq, cut + 1, ei, dp);
+
+            int ans = lres + sumoffreq(si, ei, freq) + rres;
+            minAns = Math.min(ans, minAns);
+        }
+        return dp[si][ei] = minAns;
+    }
+
+    static int optimalSearchTree(int keys[], int freq[], int n) {
+        // code here
+        int[][] dp = new int[n][n];
+        for (int[] d : dp) {
+            Arrays.fill(d, -1);
+        }
+        return helper(keys, freq, 0, n - 1, dp);
+    }
+
+    // 95. Unique Binary Search Trees II
+    public static List<TreeNode> helper(int st, int end) {
+        List<TreeNode> res = new ArrayList<>();
+        if (st == end) {
+            TreeNode base = new TreeNode(st);
+            res.add(base);
+            return res;
+        }
+        if (st > end) {
+            TreeNode base = null;
+            res.add(base);
+            return res;
+        }
+        for (int cut = st; cut <= end; cut++) {
+            List<TreeNode> lr = helper(st, cut - 1);
+            List<TreeNode> rr = helper(cut + 1, end);
+            for (var l : lr) {
+                for (var r : rr) {
+                    TreeNode node = new TreeNode(cut);
+                    node.left = l;
+                    node.right = r;
+                    res.add(node);
+                }
+            }
+        }
+        return res;
+
+    }
+
+    public List<TreeNode> generateTrees(int n) {
+        return helper(1, n);
+    }
+
     public static void main(String[] args) {
         String s = "1+2*3+4*5";
         int n = s.length();
